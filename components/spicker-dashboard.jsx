@@ -217,7 +217,7 @@ function Card({ children, glow = null, style = {} }) {
 
 function Tag({ children, color = "#3b82f6", pulse = false }) {
   return (
-    <span style={{ display:"inline-flex", alignItems:"center", gap:4, padding:"2px 8px", borderRadius:99, background:color+"18", border:`1px solid ${color}35`, fontSize:9, fontWeight:900, color, letterSpacing:.8, textTransform:"uppercase", whiteSpace:"nowrap" }}>
+    <span style={{ display:"inline-flex", alignItems:"center", gap:4, padding:"2px 8px", borderRadius:99, background:color+"18", border:`1px solid ${color}35`, fontSize:10, fontWeight:900, color, letterSpacing:.8, textTransform:"uppercase", whiteSpace:"nowrap" }}>
       {pulse && <Pulse color={color} size={5}/>}
       {children}
     </span>
@@ -238,13 +238,13 @@ function SectionHead({ icon, title, desc, right, onMore }) {
       <div style={{ flex:1, minWidth:0 }}>
         <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:3, flexWrap:"wrap" }}>
           {icon && <span style={{ fontSize:17 }}>{icon}</span>}
-          {title && <span style={{ fontSize:15, fontWeight:900, color:"#f1f5f9", letterSpacing:-.3 }}>{title}</span>}
+          {title && <span style={{ fontSize:16, fontWeight:900, color:"#f1f5f9", letterSpacing:-.3 }}>{title}</span>}
           {right}
         </div>
-        {desc && <p style={{ fontSize:10, color:"#334155", margin:0, letterSpacing:.2 }}>{desc}</p>}
+        {desc && <p style={{ fontSize:11, color:"#64748b", margin:0, letterSpacing:.2 }}>{desc}</p>}
       </div>
       {onMore && (
-        <button onClick={onMore} style={{ flexShrink:0, marginLeft:10, padding:"4px 10px", borderRadius:8, background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)", color:"#475569", fontSize:9, fontWeight:700, cursor:"pointer", whiteSpace:"nowrap" }}>
+        <button onClick={onMore} style={{ flexShrink:0, marginLeft:10, padding:"4px 10px", borderRadius:8, background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)", color:"#64748b", fontSize:10, fontWeight:700, cursor:"pointer", whiteSpace:"nowrap" }}>
           전체보기 →
         </button>
       )}
@@ -273,7 +273,7 @@ function GlobalStats() {
             <div style={{ width:5, height:5, borderRadius:"50%", background:s.color, animation:"spk-dot-blink 2s ease-in-out infinite" }}/>
           </div>
           <div style={{ fontSize:16, fontWeight:900, color:s.color, fontFamily:"monospace", letterSpacing:-1, lineHeight:1 }}>{s.val}</div>
-          <div style={{ fontSize:8, color:"#334155", marginTop:4, fontWeight:700, letterSpacing:.5, textTransform:"uppercase" }}>{s.label}</div>
+          <div style={{ fontSize:10, color:"#64748b", marginTop:4, fontWeight:700, letterSpacing:.5, textTransform:"uppercase" }}>{s.label}</div>
         </Card>
       ))}
     </div>
@@ -297,14 +297,14 @@ function DropRadar({ timer }) {
           <div style={{ fontSize:48, fontWeight:900, fontFamily:"monospace", color:"#ef4444", lineHeight:1, animation:"spk-timer-pulse 1s ease-in-out infinite" }}>
             {mins}:{secs}
           </div>
-          <div style={{ fontSize:8, color:"#475569", marginTop:3, letterSpacing:2, textTransform:"uppercase" }}>다음 폭락 감지까지</div>
+          <div style={{ fontSize:10, color:"#64748b", marginTop:3, letterSpacing:2, textTransform:"uppercase" }}>다음 폭락 감지까지</div>
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:6, marginBottom:10 }}>
           {DROPS.map((d,i) => (
             <div key={i} style={{ padding:"8px 11px", borderRadius:11, background:"rgba(239,68,68,.05)", border:`1px solid rgba(239,68,68,${d.urgency==="CRITICAL"?".3":".12"})`, display:"flex", justifyContent:"space-between", alignItems:"center", animation:d.urgency==="CRITICAL"?"spk-card-flash 3s ease-in-out infinite":"none" }}>
               <div style={{ minWidth:0 }}>
-                <div style={{ fontSize:10, fontWeight:800, color:"#f1f5f9", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{d.match}</div>
-                <div style={{ fontSize:8, color:"#475569", marginTop:1 }}>{d.league} · {d.before} → {d.after}</div>
+                <div style={{ fontSize:11, fontWeight:800, color:"#f1f5f9", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{d.match}</div>
+                <div style={{ fontSize:10, color:"#64748b", marginTop:1 }}>{d.league} · {d.before} → {d.after}</div>
               </div>
               <div style={{ textAlign:"right", flexShrink:0, marginLeft:8 }}>
                 <div style={{ fontSize:13, fontWeight:900, color:"#ef4444" }}>{d.pct}%</div>
@@ -313,7 +313,7 @@ function DropRadar({ timer }) {
             </div>
           ))}
         </div>
-        <button style={{ width:"100%", padding:"10px", borderRadius:11, background:"linear-gradient(135deg,#ef4444,#dc2626)", border:"none", color:"#fff", fontSize:11, fontWeight:900, cursor:"pointer", letterSpacing:.8, boxShadow:"0 0 18px rgba(239,68,68,.35)" }}>
+        <button style={{ width:"100%", padding:"10px", borderRadius:11, background:"linear-gradient(135deg,#ef4444,#dc2626)", border:"none", color:"#fff", fontSize:12, fontWeight:900, cursor:"pointer", letterSpacing:.8, boxShadow:"0 0 18px rgba(239,68,68,.35)" }}>
           ⚡ 폭락 전 즉시 진입하기
         </button>
       </div>
@@ -349,8 +349,8 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
         {/* Ball */}
         <div style={{ position:"absolute", width:13, height:13, borderRadius:"50%", background:"#fbbf24", boxShadow:"0 0 16px #fbbf24,0 0 32px rgba(251,191,36,.5)", left:`${ballPos.x}%`, top:`${ballPos.y}%`, transform:"translate(-50%,-50%)", transition:"left 1.4s cubic-bezier(.25,.46,.45,.94), top 1.4s cubic-bezier(.25,.46,.45,.94)" }}/>
         {/* Team names */}
-        <div style={{ position:"absolute", top:8, left:12, fontSize:9, fontWeight:900, color:"#94a3b8" }}>아스날</div>
-        <div style={{ position:"absolute", top:8, right:12, fontSize:9, fontWeight:900, color:"#94a3b8" }}>맨시티</div>
+        <div style={{ position:"absolute", top:8, left:12, fontSize:10, fontWeight:900, color:"#94a3b8" }}>아스날</div>
+        <div style={{ position:"absolute", top:8, right:12, fontSize:10, fontWeight:900, color:"#94a3b8" }}>맨시티</div>
         {/* Score */}
         <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)" }}>
           <ScoreBoard h={score.h} a={score.a}/>
@@ -359,11 +359,11 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
         <div style={{ position:"absolute", bottom:6, left:0, right:0, display:"flex", justifyContent:"space-around", padding:"0 10px" }}>
           {[{l:"점유율",h:"43%",a:"57%"},{l:"슈팅",h:"4",a:"8"},{l:"유효",h:"2",a:"5"},{l:"코너",h:"3",a:"6"}].map((s,i) => (
             <div key={i} style={{ textAlign:"center" }}>
-              <div style={{ fontSize:7, color:"#1e3a5f", marginBottom:1 }}>{s.l}</div>
+              <div style={{ fontSize:8, color:"#64748b", marginBottom:1 }}>{s.l}</div>
               <div style={{ display:"flex", gap:3, alignItems:"center" }}>
-                <span style={{ fontSize:9, fontWeight:900, color:"#60a5fa" }}>{s.h}</span>
-                <span style={{ fontSize:7, color:"#1e293b" }}>-</span>
-                <span style={{ fontSize:9, fontWeight:900, color:"#818cf8" }}>{s.a}</span>
+                <span style={{ fontSize:10, fontWeight:900, color:"#60a5fa" }}>{s.h}</span>
+                <span style={{ fontSize:8, color:"#64748b" }}>-</span>
+                <span style={{ fontSize:10, fontWeight:900, color:"#818cf8" }}>{s.a}</span>
               </div>
             </div>
           ))}
@@ -373,7 +373,7 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
       <div style={{ padding:"10px 12px", background:"rgba(0,0,0,.4)", display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8 }}>
         {[{label:"홈 승",val:liveOdds.home,color:"#3b82f6"},{label:"무승부",val:liveOdds.draw,color:"#8b5cf6"},{label:"원정 승",val:liveOdds.away,color:"#06b6d4"}].map((o,i) => (
           <div key={i} style={{ background:"rgba(10,15,30,.8)", border:"1px solid rgba(255,255,255,.07)", borderRadius:11, padding:"9px 6px", textAlign:"center" }}>
-            <div style={{ fontSize:8, color:"#475569", fontWeight:900, letterSpacing:1, textTransform:"uppercase", marginBottom:3 }}>{o.label}</div>
+            <div style={{ fontSize:10, color:"#64748b", fontWeight:900, letterSpacing:1, textTransform:"uppercase", marginBottom:3 }}>{o.label}</div>
             <div style={{ fontSize:19, fontWeight:900, fontFamily:"monospace", color:o.color, animation:"spk-odds-blink 2.5s ease-in-out infinite" }}>{o.val.toFixed(2)}</div>
           </div>
         ))}
@@ -381,8 +381,8 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
       {danger && (
         <div style={{ margin:"0 12px 10px", padding:"7px 12px", borderRadius:10, background:"rgba(239,68,68,.08)", border:"1px solid rgba(239,68,68,.3)", display:"flex", alignItems:"center", gap:8, animation:"spk-card-flash 1.2s ease-in-out infinite" }}>
           <span style={{ fontSize:13 }}>⚠️</span>
-          <span style={{ fontSize:10, fontWeight:900, color:"#ef4444" }}>DANGEROUS ATTACK</span>
-          <span style={{ fontSize:9, color:"#475569" }}>맨시티 · 페널티박스 침투 · {matchTime}&apos;</span>
+          <span style={{ fontSize:11, fontWeight:900, color:"#ef4444" }}>DANGEROUS ATTACK</span>
+          <span style={{ fontSize:10, color:"#64748b" }}>맨시티 · 페널티박스 침투 · {matchTime}&apos;</span>
         </div>
       )}
     </Card>
@@ -403,10 +403,10 @@ function InjuredList() {
               <span style={{ fontSize:13 }}>{p.flag}</span>
               <div style={{ minWidth:0 }}>
                 <div style={{ display:"flex", gap:5, alignItems:"center" }}>
-                  <span style={{ fontSize:11, fontWeight:900, color:"#f1f5f9" }}>{p.player}</span>
-                  <Tag color="#334155">{p.pos}</Tag>
+                  <span style={{ fontSize:12, fontWeight:900, color:"#f1f5f9" }}>{p.player}</span>
+                  <Tag color="#64748b">{p.pos}</Tag>
                 </div>
-                <div style={{ fontSize:8, color:"#475569", marginTop:1 }}>{p.team} · {p.league} · {p.reason}</div>
+                <div style={{ fontSize:10, color:"#94a3b8", marginTop:2 }}>{p.team} · {p.league} · {p.reason}</div>
               </div>
             </div>
             <div style={{ display:"flex", gap:5, flexShrink:0 }}>
@@ -436,7 +436,7 @@ function WhaleTracker() {
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:7 }}>
               <div style={{ display:"flex", gap:5, alignItems:"center" }}>
                 <Tag color={w.type==="SHARP"?"#6366f1":"#8b5cf6"} pulse>{w.type}</Tag>
-                <span style={{ fontSize:10, fontWeight:800, color:"#f1f5f9" }}>{w.match}</span>
+                <span style={{ fontSize:11, fontWeight:800, color:"#f1f5f9" }}>{w.match}</span>
               </div>
               <Tag color="#06b6d4">{w.tag}</Tag>
             </div>
@@ -446,13 +446,13 @@ function WhaleTracker() {
             </div>
             <div style={{ marginBottom:4 }}>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:2 }}>
-                <span style={{ fontSize:8, color:"#334155" }}>신뢰도</span>
-                <span style={{ fontSize:8, fontWeight:900, color:"#6366f1" }}>{w.conf}%</span>
+                <span style={{ fontSize:10, color:"#64748b" }}>신뢰도</span>
+                <span style={{ fontSize:10, fontWeight:900, color:"#6366f1" }}>{w.conf}%</span>
               </div>
               <Bar pct={w.conf} color="#6366f1"/>
             </div>
             <div style={{ display:"flex", gap:4 }}>
-              {w.books.map((b,j) => <Tag key={j} color="#334155">{b}</Tag>)}
+              {w.books.map((b,j) => <Tag key={j} color="#64748b">{b}</Tag>)}
             </div>
           </div>
         ))}
@@ -480,36 +480,36 @@ function AIPicks() {
               <div>
                 <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:3 }}>
                   <Tag color={p.tier==="GOLD"?"#fbbf24":"#6366f1"}>{p.tier}</Tag>
-                  <Tag color="#334155">{p.league}</Tag>
+                  <Tag color="#64748b">{p.league}</Tag>
                 </div>
                 <div style={{ fontSize:12, fontWeight:900, color:"#f1f5f9" }}>{p.match}</div>
               </div>
               <div style={{ textAlign:"right" }}>
-                <div style={{ fontSize:11, fontWeight:900, color:"#22c55e" }}>EV {p.ev}</div>
-                <div style={{ fontSize:9, color:"#475569" }}>신뢰도 {p.conf}%</div>
+                <div style={{ fontSize:12, fontWeight:900, color:"#22c55e" }}>EV {p.ev}</div>
+                <div style={{ fontSize:10, color:"#64748b" }}>신뢰도 {p.conf}%</div>
               </div>
             </div>
             <div style={{ padding:"7px 10px", borderRadius:9, background:"rgba(0,0,0,.3)", marginBottom:7 }}>
               {bought[p.id] ? (
                 <div style={{ textAlign:"center" }}>
                   <div style={{ fontSize:13, fontWeight:900, color:"#22c55e" }}>✓ {p.pick} <span style={{ color:"#fbbf24" }}>@ {p.odds}</span></div>
-                  <div style={{ fontSize:9, color:"#475569", marginTop:2 }}>{p.reason}</div>
+                  <div style={{ fontSize:10, color:"#64748b", marginTop:2 }}>{p.reason}</div>
                 </div>
               ) : (
                 <div style={{ display:"flex", alignItems:"center", gap:5 }}>
                   <span style={{ fontSize:16 }}>🔒</span>
-                  <span style={{ fontSize:9, color:"#334155", filter:"blur(2.5px)", userSelect:"none" }}>████ 승 @ █.██ · {p.reason.slice(0,10)}...</span>
+                  <span style={{ fontSize:10, color:"#64748b", filter:"blur(2.5px)", userSelect:"none" }}>████ 승 @ █.██ · {p.reason.slice(0,10)}...</span>
                 </div>
               )}
             </div>
             <button onClick={() => setBought(b => ({...b, [p.id]:true}))}
-              style={{ width:"100%", padding:"8px", borderRadius:9, background:bought[p.id]?"rgba(34,197,94,.15)":`linear-gradient(135deg,${p.tier==="GOLD"?"#fbbf24,#f97316":"#6366f1,#8b5cf6"})`, border:bought[p.id]?"1px solid rgba(34,197,94,.3)":"none", color:bought[p.id]?"#22c55e":"#fff", fontSize:10, fontWeight:900, cursor:"pointer" }}>
+              style={{ width:"100%", padding:"8px", borderRadius:9, background:bought[p.id]?"rgba(34,197,94,.15)":`linear-gradient(135deg,${p.tier==="GOLD"?"#fbbf24,#f97316":"#6366f1,#8b5cf6"})`, border:bought[p.id]?"1px solid rgba(34,197,94,.3)":"none", color:bought[p.id]?"#22c55e":"#fff", fontSize:11, fontWeight:900, cursor:"pointer" }}>
               {bought[p.id] ? "✓ 픽 공개됨" : `🔓 ${p.price.toLocaleString()}원으로 열기`}
             </button>
           </div>
         ))}
         <div style={{ padding:"8px 10px", borderRadius:10, background:"rgba(34,197,94,.04)", border:"1px solid rgba(34,197,94,.14)", textAlign:"center" }}>
-          <div style={{ fontSize:9, color:"#22c55e", fontWeight:700 }}>💡 AI 픽 월 구독 · 전체 무제한 열람 · 월 49,900원</div>
+          <div style={{ fontSize:10, color:"#22c55e", fontWeight:700 }}>💡 AI 픽 월 구독 · 전체 무제한 열람 · 월 49,900원</div>
         </div>
       </div>
     </Card>
@@ -533,19 +533,19 @@ function SocialVIP() {
                 <div style={{ width:32, height:32, borderRadius:10, background:"linear-gradient(135deg,rgba(236,72,153,.18),rgba(99,102,241,.18))", border:"1px solid rgba(255,255,255,.08)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, flexShrink:0 }}>{n.sport}</div>
                 <div>
                   <div style={{ display:"flex", gap:4, alignItems:"center" }}>
-                    <span style={{ fontSize:11, fontWeight:900, color:"#f1f5f9" }}>{n.src}</span>
-                    {n.verified && <span style={{ fontSize:10, color:"#3b82f6" }}>✓</span>}
+                    <span style={{ fontSize:12, fontWeight:900, color:"#f1f5f9" }}>{n.src}</span>
+                    {n.verified && <span style={{ fontSize:11, color:"#3b82f6" }}>✓</span>}
                     {n.hot && <Tag color="#ec4899" pulse>HOT</Tag>}
                   </div>
-                  <div style={{ fontSize:8, color:"#334155", marginTop:1 }}>{n.flag} {n.followers} 팔로워 · {n.platform}</div>
+                  <div style={{ fontSize:10, color:"#64748b", marginTop:1 }}>{n.flag} {n.followers} 팔로워 · {n.platform}</div>
                 </div>
               </div>
-              <span style={{ fontSize:8, color:"#334155", flexShrink:0, marginLeft:8 }}>{n.time}</span>
+              <span style={{ fontSize:10, color:"#64748b", flexShrink:0, marginLeft:8 }}>{n.time}</span>
             </div>
-            <p style={{ fontSize:11, color:"#cbd5e1", lineHeight:1.7, margin:"0 0 7px" }}>{n.text}</p>
+            <p style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.7, margin:"0 0 7px" }}>{n.text}</p>
             <div style={{ display:"flex", gap:5 }}>
               <Tag color="#3b82f6">🤖 AI번역</Tag>
-              <Tag color="#334155">원문 보기</Tag>
+              <Tag color="#64748b">원문 보기</Tag>
             </div>
           </div>
         ))}
@@ -569,22 +569,22 @@ function ShareBet({ oddsVals, flash }) {
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:9 }}>
               <div style={{ display:"flex", gap:5, alignItems:"center" }}>
                 {s.hot && <Pulse color="#f59e0b"/>}
-                <span style={{ fontSize:11, fontWeight:800, color:"#f1f5f9" }}>{s.match}</span>
+                <span style={{ fontSize:12, fontWeight:800, color:"#f1f5f9" }}>{s.match}</span>
               </div>
               <Tag color={s.type==="SUPERBET"?"#f59e0b":"#06b6d4"}>{s.type}</Tag>
             </div>
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:7, marginBottom:9 }}>
               {[{bk:s.b1, ov:oddsVals[i]?.b1},{bk:s.b2, ov:oddsVals[i]?.b2}].map((item,j) => (
                 <div key={j} style={{ background:"rgba(0,0,0,.3)", borderRadius:9, padding:"7px", textAlign:"center" }}>
-                  <div style={{ fontSize:8, color:"#475569", marginBottom:2 }}>{item.bk.n}</div>
+                  <div style={{ fontSize:10, color:"#64748b", marginBottom:2 }}>{item.bk.n}</div>
                   <div style={{ fontSize:17, fontWeight:900, color:"#f59e0b", fontFamily:"monospace", animation:flash[i]?"spk-odds-blink .6s ease":"none" }}>{(item.ov ?? item.bk.v).toFixed(2)}</div>
                 </div>
               ))}
             </div>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"7px 10px", borderRadius:9, background:"rgba(34,197,94,.05)", border:"1px solid rgba(34,197,94,.14)" }}>
               <div>
-                <div style={{ fontSize:9, color:"#22c55e", fontWeight:700 }}>📊 보장 수익</div>
-                <div style={{ fontSize:8, color:"#475569", marginTop:1 }}>배당차 {s.gap}</div>
+                <div style={{ fontSize:10, color:"#22c55e", fontWeight:700 }}>📊 보장 수익</div>
+                <div style={{ fontSize:10, color:"#64748b", marginTop:1 }}>배당차 {s.gap}</div>
               </div>
               <div style={{ fontSize:15, fontWeight:900, color:"#22c55e" }}>{s.profit}</div>
             </div>
@@ -613,32 +613,32 @@ function SBloggerSlider() {
           <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:3, flexWrap:"wrap" }}>
             <span style={{ fontSize:17 }}>🏆</span>
             <span style={{ fontSize:15, fontWeight:900, color:"#f1f5f9" }}>스블</span>
-            <span style={{ fontSize:10, fontWeight:900, color:"#a855f7", letterSpacing:1 }}>SBLOGGER</span>
+            <span style={{ fontSize:11, fontWeight:900, color:"#a855f7", letterSpacing:1 }}>SBLOGGER</span>
             <Tag color="#a855f7" pulse>LIVE</Tag>
           </div>
-          <p style={{ fontSize:10, color:"#334155", margin:0 }}>스픽커 공인 팁스터 실시간 랭킹 · 적중률 · 수익률 · 연속 적중</p>
+          <p style={{ fontSize:11, color:"#64748b", margin:0 }}>스픽커 공인 팁스터 실시간 랭킹 · 적중률 · 수익률 · 연속 적중</p>
         </div>
         <div style={{ display:"flex", gap:6, alignItems:"center", flexShrink:0, marginLeft:10 }}>
           {PAGES.map((_,i) => (
             <div key={i} onClick={() => setPage(i)} style={{ width:i===page?16:5, height:5, borderRadius:99, background:i===page?"#a855f7":"rgba(168,85,247,.2)", cursor:"pointer", transition:"all .3s" }}/>
           ))}
-          <button onClick={() => {}} style={{ padding:"4px 10px", borderRadius:8, background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)", color:"#475569", fontSize:9, fontWeight:700, cursor:"pointer" }}>전체보기 →</button>
+          <button onClick={() => {}} style={{ padding:"4px 10px", borderRadius:8, background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)", color:"#64748b", fontSize:10, fontWeight:700, cursor:"pointer" }}>전체보기 →</button>
         </div>
       </div>
       <div style={{ padding:"0 12px 12px", overflow:"hidden" }}>
         <div key={page} style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, animation:"spk-slide-in .4s ease" }}>
           {current.map((b) => (
             <div key={b.id} style={{ display:"flex", alignItems:"center", gap:7, padding:"7px 9px", borderRadius:11, background:"rgba(168,85,247,.04)", border:"1px solid rgba(168,85,247,.09)" }}>
-              <div style={{ fontSize:11, fontWeight:900, color:"#475569", fontFamily:"monospace", minWidth:20, textAlign:"center" }}>#{b.rank}</div>
+              <div style={{ fontSize:12, fontWeight:900, color:"#64748b", fontFamily:"monospace", minWidth:20, textAlign:"center" }}>#{b.rank}</div>
               <div style={{ width:26, height:26, borderRadius:8, background:`${b.gc}18`, border:`1px solid ${b.gc}35`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, flexShrink:0 }}>
                 {BLOGGER_ICONS[Math.min(Math.floor(b.rank/4), 7)]}
               </div>
               <div style={{ minWidth:0, flex:1 }}>
-                <div style={{ fontSize:10, fontWeight:900, color:"#f1f5f9", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{b.name}</div>
-                <div style={{ fontSize:8, color:b.gc, fontWeight:700, marginTop:1 }}>{b.grade} · {b.win}%</div>
+                <div style={{ fontSize:11, fontWeight:900, color:"#f1f5f9", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{b.name}</div>
+                <div style={{ fontSize:10, color:b.gc, fontWeight:700, marginTop:1 }}>{b.grade} · {b.win}%</div>
               </div>
               <div style={{ flexShrink:0 }}>
-                <div style={{ fontSize:9, color:"#22c55e", fontWeight:900 }}>{b.streak}연</div>
+                <div style={{ fontSize:10, color:"#22c55e", fontWeight:900 }}>{b.streak}연</div>
               </div>
             </div>
           ))}
@@ -662,26 +662,26 @@ function Watchlist() {
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:6 }}>
               <div>
                 <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:2 }}>
-                  <Tag color="#334155">{w.league}</Tag>
-                  <span style={{ fontSize:8, color:"#475569" }}>{w.time}</span>
+                  <Tag color="#64748b">{w.league}</Tag>
+                  <span style={{ fontSize:10, color:"#64748b" }}>{w.time}</span>
                   {w.alert && <Tag color="#06b6d4" pulse>알림ON</Tag>}
                 </div>
-                <div style={{ fontSize:11, fontWeight:800, color:"#f1f5f9" }}>{w.match}</div>
+                <div style={{ fontSize:12, fontWeight:800, color:"#f1f5f9" }}>{w.match}</div>
               </div>
-              <button onClick={() => setList(l => l.filter((_,j) => j!==i))} style={{ background:"none", border:"none", color:"#334155", cursor:"pointer", fontSize:13, padding:0 }}>✕</button>
+              <button onClick={() => setList(l => l.filter((_,j) => j!==i))} style={{ background:"none", border:"none", color:"#64748b", cursor:"pointer", fontSize:13, padding:0 }}>✕</button>
             </div>
             <div style={{ display:"flex", gap:5, marginBottom:5 }}>
               {[{l:"H",v:w.odds.h,c:"#3b82f6"},{l:"D",v:w.odds.d,c:"#8b5cf6"},{l:"A",v:w.odds.a,c:"#06b6d4"}].filter(o => o.v != null).map((o,j) => (
                 <div key={j} style={{ flex:1, background:"rgba(0,0,0,.3)", borderRadius:7, padding:"4px", textAlign:"center" }}>
-                  <div style={{ fontSize:7, color:"#475569" }}>{o.l}</div>
+                  <div style={{ fontSize:8, color:"#64748b" }}>{o.l}</div>
                   <div style={{ fontSize:12, fontWeight:900, color:o.c, fontFamily:"monospace" }}>{o.v}</div>
                 </div>
               ))}
             </div>
-            <div style={{ fontSize:9, color:"#475569", fontStyle:"italic" }}>📝 {w.note}</div>
+            <div style={{ fontSize:10, color:"#64748b", fontStyle:"italic" }}>📝 {w.note}</div>
           </div>
         ))}
-        <button style={{ padding:"8px", borderRadius:9, background:"rgba(6,182,212,.07)", border:"1px solid rgba(6,182,212,.18)", color:"#06b6d4", fontSize:9, fontWeight:700, cursor:"pointer" }}>
+        <button style={{ padding:"8px", borderRadius:9, background:"rgba(6,182,212,.07)", border:"1px solid rgba(6,182,212,.18)", color:"#06b6d4", fontSize:10, fontWeight:700, cursor:"pointer" }}>
           + 경기 추가하기
         </button>
       </div>
@@ -694,11 +694,159 @@ function Watchlist() {
 // ══════════════════════════════════════════════════
 function HamburgerBtn({ open, onClick }) {
   return (
-    <button onClick={onClick} aria-label="메뉴" style={{ width:36, height:36, borderRadius:9, background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.08)", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:5, padding:0, flexShrink:0 }}>
-      <span style={{ display:"block", width:16, height:1.5, background:open?"#3b82f6":"#94a3b8", borderRadius:99, transition:"all .25s", transform:open?"rotate(45deg) translateY(6.5px)":"none" }}/>
-      <span style={{ display:"block", width:16, height:1.5, background:open?"transparent":"#94a3b8", borderRadius:99, transition:"opacity .25s", opacity:open?0:1 }}/>
-      <span style={{ display:"block", width:16, height:1.5, background:open?"#3b82f6":"#94a3b8", borderRadius:99, transition:"all .25s", transform:open?"rotate(-45deg) translateY(-6.5px)":"none" }}/>
+    <button onClick={onClick} aria-label="메뉴" style={{ width:36, height:36, borderRadius:9, background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.08)", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:5, padding:0, flexShrink:0, position:"relative" }}>
+      <span style={{ display:"block", width:17, height:2, background:"#94a3b8", borderRadius:99, transition:"all .3s ease", transformOrigin:"center", transform: open ? "translateY(7px) rotate(45deg)" : "translateY(0) rotate(0deg)", opacity: open ? 0 : 1 }}/>
+      <span style={{ display:"block", width:17, height:2, background:"#94a3b8", borderRadius:99, transition:"all .3s ease", transformOrigin:"center", transform: open ? "translateY(0px) rotate(0deg)" : "translateY(0) rotate(0deg)", opacity: open ? 0 : 1 }}/>
+      <span style={{ display:"block", width:17, height:2, background:"#94a3b8", borderRadius:99, transition:"all .3s ease", transformOrigin:"center", transform: open ? "translateY(-7px) rotate(-45deg)" : "translateY(0) rotate(0deg)", opacity: open ? 0 : 1 }}/>
+      {open && (
+        <span style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", color:"#3b82f6", fontSize:18, fontWeight:300, lineHeight:1 }}>✕</span>
+      )}
     </button>
+  );
+}
+
+
+// ══════════════════════════════════════════════════
+// FLOATING CHAT
+// ══════════════════════════════════════════════════
+const CHAT_BOTS = [
+  {name:"SharpKing", badge:"🤖", color:"#6366f1", ai:true},
+  {name:"WhaleHunter", badge:"🤖", color:"#8b5cf6", ai:true},
+  {name:"김민준", badge:"👤", color:"#06b6d4", ai:false},
+  {name:"이서연", badge:"👤", color:"#22c55e", ai:false},
+  {name:"DataPro", badge:"🤖", color:"#a855f7", ai:true},
+  {name:"박지훈", badge:"👤", color:"#f59e0b", ai:false},
+];
+
+const INIT_MESSAGES = [
+  {id:1, user:"SharpKing",   ai:true,  color:"#6366f1", text:"아스날 홈 배당 또 움직였네요. 샤프머니 계속 맨시티로 들어오는 중 🐋", time:"14:22"},
+  {id:2, user:"김민준",      ai:false, color:"#06b6d4", text:"할란드 복귀 확정이면 맨시티 봐야겠네", time:"14:23"},
+  {id:3, user:"WhaleHunter", ai:true,  color:"#8b5cf6", text:"AI분석: 맨시티 원정 최근 5경기 4승1무. EV +7.2% 확인됨", time:"14:24"},
+  {id:4, user:"이서연",      ai:false, color:"#22c55e", text:"배당이 1.85까지 내려왔어요 진입해야하나", time:"14:25"},
+  {id:5, user:"DataPro",     ai:true,  color:"#a855f7", text:"🤖 AI분석봇: 현재 bet365 기준 1.84. 샤프머니 집중도 94점", time:"14:26"},
+  {id:6, user:"박지훈",      ai:false, color:"#f59e0b", text:"UCL도 PSG 배당 이상하게 움직이던데", time:"14:27"},
+];
+
+const BOT_MSGS = [
+  "배당 또 움직였어요 👀",
+  "지금 샤프머니 계속 들어오는 중",
+  "AI분석: EV 플러스 확인됨 🤖",
+  "할란드 선발 확정이라던데요",
+  "이 배당이면 진입할만 하지않나요?",
+  "맨시티 원정 성적 좋죠 최근에",
+  "PSG 전술 변경 소식 있던데",
+  "스블 랭킹 올라갔다 📈",
+  "오늘 경기 기대되네요",
+  "배당 폭락 레이더 봤어요? 🔥",
+];
+
+function FloatingChat({ open, onToggle, isMobile }) {
+  const [messages, setMessages] = useState(INIT_MESSAGES);
+  const [input, setInput] = useState("");
+  const [userName] = useState("나");
+  const bottomRef = useRef(null);
+  const msgId = useRef(7);
+
+  // Auto bot messages
+  useInterval(() => {
+    if (!open) return;
+    const bot = CHAT_BOTS[Math.floor(Date.now() / 1000) % CHAT_BOTS.length];
+    const text = BOT_MSGS[Math.floor(Date.now() / 3000) % BOT_MSGS.length];
+    const now = new Date();
+    const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`;
+    setMessages(prev => [...prev.slice(-40), {
+      id: msgId.current++,
+      user: bot.name, ai: bot.ai, color: bot.color, text, time,
+    }]);
+  }, 8000);
+
+  useEffect(() => {
+    if (open) bottomRef.current?.scrollIntoView({ behavior:"smooth" });
+  }, [messages, open]);
+
+  const send = () => {
+    if (!input.trim()) return;
+    const now = new Date();
+    const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`;
+    setMessages(prev => [...prev, { id: msgId.current++, user: userName, ai: false, color: "#3b82f6", text: input.trim(), time, me: true }]);
+    setInput("");
+  };
+
+  const W = isMobile ? "calc(100vw - 24px)" : "320px";
+  const H = isMobile ? "65vh" : "440px";
+  const RIGHT = isMobile ? "12px" : "20px";
+  const BOTTOM = isMobile ? "90px" : "60px";
+
+  return (
+    <>
+      {/* Toggle button */}
+      <div onClick={onToggle} style={{ position:"fixed", bottom:BOTTOM, right:RIGHT, zIndex:200, cursor:"pointer", width:48, height:48, borderRadius:"50%", background:"linear-gradient(135deg,#3b82f6,#6366f1)", boxShadow:`0 0 20px rgba(99,102,241,.5)${open?"":",0 4px 20px rgba(0,0,0,.4)"}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, transition:"all .25s", transform:open?"scale(.9)":"scale(1)" }}>
+        {open ? "✕" : "💬"}
+        {!open && (
+          <div style={{ position:"absolute", top:-2, right:-2, width:14, height:14, borderRadius:"50%", background:"#ef4444", border:"2px solid #010409", display:"flex", alignItems:"center", justifyContent:"center", fontSize:8, fontWeight:900, color:"#fff" }}>
+            {messages.length > 6 ? "N" : messages.length}
+          </div>
+        )}
+      </div>
+
+      {/* Chat window */}
+      {open && (
+        <div style={{ position:"fixed", bottom:`calc(${BOTTOM} + 58px)`, right:RIGHT, width:W, height:H, zIndex:199, display:"flex", flexDirection:"column", background:"rgba(8,12,24,.97)", backdropFilter:"blur(28px)", border:"1px solid rgba(99,102,241,.25)", borderRadius:18, overflow:"hidden", boxShadow:"0 0 40px rgba(99,102,241,.15), 0 20px 60px rgba(0,0,0,.5)", animation:"spk-slide-in .25s ease" }}>
+          {/* Header */}
+          <div style={{ padding:"12px 14px", borderBottom:"1px solid rgba(255,255,255,.06)", background:"rgba(99,102,241,.08)", display:"flex", justifyContent:"space-between", alignItems:"center", flexShrink:0 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <Pulse color="#22c55e" size={7}/>
+              <span style={{ fontSize:13, fontWeight:900, color:"#f1f5f9" }}>실시간 채팅</span>
+              <span style={{ fontSize:10, color:"#64748b" }}>· {messages.length + 14}명 참여중</span>
+            </div>
+            <div style={{ display:"flex", gap:6 }}>
+              <Tag color="#6366f1">🤖 AI봇 포함</Tag>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div style={{ flex:1, overflowY:"auto", padding:"10px 12px", display:"flex", flexDirection:"column", gap:8 }}>
+            {messages.map(m => (
+              <div key={m.id} style={{ display:"flex", flexDirection:m.me?"row-reverse":"row", gap:7, alignItems:"flex-start" }}>
+                {!m.me && (
+                  <div style={{ width:28, height:28, borderRadius:9, background:`${m.color}20`, border:`1px solid ${m.color}35`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, flexShrink:0 }}>
+                    {m.ai ? "🤖" : "👤"}
+                  </div>
+                )}
+                <div style={{ maxWidth:"75%" }}>
+                  {!m.me && (
+                    <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:3 }}>
+                      <span style={{ fontSize:10, fontWeight:700, color:m.color }}>{m.user}</span>
+                      {m.ai && <Tag color={m.color}>AI봇</Tag>}
+                      <span style={{ fontSize:9, color:"#64748b" }}>{m.time}</span>
+                    </div>
+                  )}
+                  <div style={{ padding:"7px 10px", borderRadius: m.me?"12px 12px 4px 12px":"12px 12px 12px 4px", background: m.me?"linear-gradient(135deg,#3b82f6,#6366f1)":"rgba(255,255,255,.06)", border: m.me?"none":"1px solid rgba(255,255,255,.07)", fontSize:11, color:"#f1f5f9", lineHeight:1.6 }}>
+                    {m.text}
+                  </div>
+                  {m.me && <div style={{ fontSize:9, color:"#64748b", textAlign:"right", marginTop:2 }}>{m.time}</div>}
+                </div>
+              </div>
+            ))}
+            <div ref={bottomRef}/>
+          </div>
+
+          {/* Input */}
+          <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(255,255,255,.06)", display:"flex", gap:8, alignItems:"center", flexShrink:0, background:"rgba(0,0,0,.2)" }}>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key==="Enter" && send()}
+              placeholder="메시지 입력..."
+              style={{ flex:1, background:"rgba(255,255,255,.06)", border:"1px solid rgba(255,255,255,.1)", borderRadius:10, padding:"8px 12px", color:"#f1f5f9", fontSize:11, outline:"none" }}
+            />
+            <button onClick={send} style={{ width:36, height:36, borderRadius:10, background:"linear-gradient(135deg,#3b82f6,#6366f1)", border:"none", color:"#fff", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              ➤
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -706,6 +854,8 @@ function HamburgerBtn({ open, onClick }) {
 // ROOT APP
 // ══════════════════════════════════════════════════
 export default function SpickerDashboard() {
+  const [chatOpen,  setChatOpen]  = useState(false);
+  const [chatMsg,   setChatMsg]   = useState("");
   const [timer,     setTimer]     = useState(299);
   const [ballPos,   setBallPos]   = useState({ x:48, y:52 });
   const [liveOdds,  setLiveOdds]  = useState({ home:3.45, draw:2.10, away:1.85 });
@@ -790,7 +940,7 @@ export default function SpickerDashboard() {
               <span style={{ fontSize:16, fontWeight:900, letterSpacing:-1, color:"#f1f5f9" }}>SPICKER</span>
               <span style={{ fontSize:12, fontWeight:700, color:"#818cf8" }}>스픽커</span>
             </div>
-            <div style={{ fontSize:8, color:"#3b82f6", fontWeight:700, letterSpacing:2, marginTop:1 }}>INTELLIGENCE</div>
+            <div style={{ fontSize:10, color:"#3b82f6", fontWeight:700, letterSpacing:2, marginTop:1 }}>INTELLIGENCE</div>
           </div>
         </div>
         {/* Nav */}
@@ -799,15 +949,15 @@ export default function SpickerDashboard() {
             <div key={item.t} onClick={() => { setTab(item.t); if (isMobile) setSideOpen(false); }}
               style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 10px", borderRadius:12, cursor:"pointer", marginBottom:3, background:tab===item.t?"rgba(99,102,241,.12)":"transparent", border:tab===item.t?"1px solid rgba(99,102,241,.25)":"1px solid transparent", transition:"all .18s" }}>
               <span style={{ fontSize:16, flexShrink:0 }}>{item.icon}</span>
-              <span style={{ fontSize:12, fontWeight:tab===item.t?700:500, color:tab===item.t?"#818cf8":"#475569" }}>{item.label}</span>
+              <span style={{ fontSize:13, fontWeight:tab===item.t?800:500, color:tab===item.t?"#a5b4fc":"#94a3b8" }}>{item.label}</span>
             </div>
           ))}
         </div>
         {/* Status */}
         <div style={{ padding:"10px 8px 16px", borderTop:"1px solid rgba(255,255,255,.05)", flexShrink:0 }}>
           <div style={{ padding:"10px 12px", borderRadius:12, background:"rgba(34,197,94,.05)", border:"1px solid rgba(34,197,94,.12)" }}>
-            <div style={{ fontSize:9, color:"#22c55e", fontWeight:700 }}>✓ Data Sync Active</div>
-            <div style={{ fontSize:8, color:"#334155", marginTop:2 }}>32 Global Bookies · 147 Live Matches</div>
+            <div style={{ fontSize:10, color:"#22c55e", fontWeight:700 }}>✓ Data Sync Active</div>
+            <div style={{ fontSize:10, color:"#64748b", marginTop:2 }}>32 Global Bookies · 147 Live Matches</div>
           </div>
         </div>
       </div>
@@ -824,7 +974,7 @@ export default function SpickerDashboard() {
                 <div style={{ animation:"spk-logo-glow 3s ease-in-out infinite" }}><SpickerLogo size={26}/></div>
                 <div style={{ display:"flex", alignItems:"baseline", gap:4 }}>
                   <span style={{ fontSize:14, fontWeight:900, letterSpacing:-1, color:"#f1f5f9" }}>SPICKER</span>
-                  <span style={{ fontSize:11, fontWeight:700, color:"#818cf8" }}>스픽커</span>
+                  <span style={{ fontSize:12, fontWeight:700, color:"#818cf8" }}>스픽커</span>
                 </div>
               </div>
             )}
@@ -833,16 +983,16 @@ export default function SpickerDashboard() {
             <div style={{ flex:1, overflow:"hidden", display:"flex", alignItems:"center", gap:8 }}>
               <Pulse color="#ef4444" size={5}/>
               <div style={{ overflow:"hidden", whiteSpace:"nowrap", flex:1 }}>
-                <span style={{ display:"inline-block", animation:"spk-ticker 30s linear infinite", fontSize:10, color:"#475569", fontWeight:600 }}>
+                <span style={{ display:"inline-block", animation:"spk-ticker 30s linear infinite", fontSize:11, color:"#64748b", fontWeight:600 }}>
                   {TICKER_TEXT}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{TICKER_TEXT}
                 </span>
               </div>
             </div>
           )}
           <div style={{ display:"flex", gap:7, alignItems:"center", flexShrink:0 }}>
-            {isMobile && <span style={{ fontSize:9, color:"#475569", maxWidth:130, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>⚡ 아스날 배당 -22.9% 급락</span>}
+            {isMobile && <span style={{ fontSize:10, color:"#64748b", maxWidth:130, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>⚡ 아스날 배당 -22.9% 급락</span>}
             <div style={{ display:"flex", alignItems:"center", gap:4, padding:"5px 9px", borderRadius:20, background:"rgba(239,68,68,.1)", border:"1px solid rgba(239,68,68,.25)" }}>
-              <Pulse color="#ef4444" size={5}/><span style={{ fontSize:8, color:"#ef4444", fontWeight:900 }}>LIVE</span>
+              <Pulse color="#ef4444" size={5}/><span style={{ fontSize:10, color:"#ef4444", fontWeight:900 }}>LIVE</span>
             </div>
             <div style={{ width:32, height:32, borderRadius:10, background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.07)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, cursor:"pointer" }}>🔔</div>
             <div style={{ width:32, height:32, borderRadius:10, background:"linear-gradient(135deg,rgba(99,102,241,.2),rgba(59,130,246,.2))", border:"1px solid rgba(99,102,241,.25)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, cursor:"pointer" }}>👤</div>
@@ -898,7 +1048,7 @@ export default function SpickerDashboard() {
           {[{icon:"🏠",t:"대시보드"},{icon:"📉",t:"폭락"},{icon:"🐋",t:"고래"},{icon:"🧠",t:"AI픽"},{icon:"⭐",t:"찜"},{icon:"🏆",t:"랭킹"}].map(item => (
             <div key={item.t} onClick={() => setTab(item.t)} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, cursor:"pointer" }}>
               <span style={{ fontSize:17 }}>{item.icon}</span>
-              <span style={{ fontSize:8, fontWeight:700, color:tab===item.t?"#3b82f6":"#334155" }}>{item.t}</span>
+              <span style={{ fontSize:10, fontWeight:700, color:tab===item.t?"#3b82f6":"#64748b" }}>{item.t}</span>
               {tab===item.t && <div style={{ width:3, height:3, borderRadius:"50%", background:"#3b82f6" }}/>}
             </div>
           ))}
@@ -910,14 +1060,16 @@ export default function SpickerDashboard() {
         <div style={{ position:"fixed", bottom:0, left:sideOpen?SIDE_W:0, right:0, background:"rgba(1,4,9,.95)", backdropFilter:"blur(16px)", borderTop:"1px solid rgba(59,130,246,.06)", padding:"8px 22px", display:"flex", justifyContent:"space-between", alignItems:"center", zIndex:40, transition:"left .28s cubic-bezier(.4,0,.2,1)" }}>
           <div style={{ display:"flex", gap:18, alignItems:"center" }}>
             {[{i:"🔄",l:"Data Sync Active",c:"#3b82f6"},{i:"🌐",l:"32 Global Bookies",c:"#6366f1"},{i:"🔒",l:"256-bit Encrypted",c:"#06b6d4"},{i:"⚡",l:"Real-time AI",c:"#a855f7"}].map((f,i) => (
-              <span key={i} style={{ display:"flex", alignItems:"center", gap:4, fontSize:8, color:f.c, fontWeight:700, letterSpacing:.8, textTransform:"uppercase" }}>
+              <span key={i} style={{ display:"flex", alignItems:"center", gap:4, fontSize:10, color:f.c, fontWeight:700, letterSpacing:.8, textTransform:"uppercase" }}>
                 <span>{f.i}</span>{f.l}
               </span>
             ))}
           </div>
-          <span style={{ fontSize:8, color:"#1e3a5f", fontFamily:"monospace", letterSpacing:2, textTransform:"uppercase" }}>SPICKER Intelligence v4.0 · Alpha</span>
+          <span style={{ fontSize:10, color:"#64748b", fontFamily:"monospace", letterSpacing:2, textTransform:"uppercase" }}>SPICKER Intelligence v4.0 · Alpha</span>
         </div>
       )}
+      {/* Floating Chat */}
+      <FloatingChat open={chatOpen} onToggle={() => setChatOpen(o => !o)} isMobile={isMobile}/>
     </div>
   );
 }
