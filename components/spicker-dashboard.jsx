@@ -1046,8 +1046,8 @@ export default function SpickerDashboard() {
             /* ─ MOBILE ─ */
             <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
               <GlobalStats/>
-              {(tab==="대시보드"||tab==="폭락")  && <DropRadar timer={timer}/>}
               {tab==="대시보드"                   && <LiveTracker ballPos={ballPos} liveOdds={liveOdds} score={score} matchTime={matchTime} danger={danger}/>}
+              {(tab==="대시보드"||tab==="폭락")  && <DropRadar timer={timer}/>}
               {(tab==="대시보드"||tab==="결장")  && <InjuredList/>}
               {(tab==="대시보드"||tab==="고래")  && <WhaleTracker/>}
               {(tab==="대시보드"||tab==="AI픽")  && <AIPicks/>}
