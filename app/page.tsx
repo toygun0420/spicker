@@ -1,216 +1,175 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-// 누락되었던 아이콘들을 임포트했습니다.
+import React, { useState, useEffect } from 'react';
 import { 
-  Menu, Volume2, Bell, User, Radio, RefreshCw, Globe2, TrendingUp, Zap, Activity, PenTool, Search 
+  Activity, Bell, ChevronRight, Crown, Globe2, Menu, Radio, 
+  RefreshCw, Search, Timer, User, Volume2, Zap 
 } from 'lucide-react';
 
-// ══════════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════════
-const BLOGGERS = Array.from({ length: 30 }, (_, i) => ({
-  id: i+1, rank: i+1,
-  name: ["ALPHA_7","SharpKing","WhaleHunter","OddsBreaker","DataPro","BetGenius","EdgeMaster","ProfitX","StatGod","TipLord","QuickEdge","ValueBet","MoneyLine","PickMaster","SharpEye","BetLogic","OddsHawk","TipKing","ProPick","WinRate"][i%20]+(i>=20?`_${i}`:""),
-  pts: 100000-i*1900, win: (81.3-i*0.9).toFixed(1),
-  grade: ["루키","실버","골드","플래티넘","다이아","마스터","그랜드마스터","크리스탈"][Math.min(Math.floor(i/4),7)],
-  gc: ["#64748b","#94a3b8","#fbbf24","#06b6d4","#6366f1","#8b5cf6","#ec4899","#00d4ff"][Math.min(Math.floor(i/4),7)],
-  streak: (i%8)+1, profit:`+${(120-i*2.5).toFixed(1)}%`,
-}));
-
-const DROPS = [
-  {match:"아스날 vs 맨시티",before:2.40,after:1.85,pct:-22.9,league:"EPL",urgency:"CRITICAL"},
-  {match:"PSG vs 바이에른",before:3.10,after:2.45,pct:-21.0,league:"UCL",urgency:"HIGH"},
-  {match:"레이커스 vs 골스",before:2.80,after:2.30,pct:-17.9,league:"NBA",urgency:"HIGH"},
-  {match:"도르트문트 vs 바이에른",before:3.50,after:2.95,pct:-15.7,league:"분데스",urgency:"MEDIUM"},
-];
-
-const WHALES = [
-  {match:"ARS vs MCI",type:"SHARP",tag:"HOME",vol:"$2.14M",conf:94,delta:"+18.2%",books:["bet365","Pinnacle"]},
-  {match:"LAL vs PHX",type:"SYNDICATE",tag:"UNDER",vol:"$1.38M",conf:87,delta:"+12.7%",books:["Unibet","William"]},
-  {match:"PSG vs BAY",type:"SHARP",tag:"DRAW",vol:"$980K",conf:81,delta:"+9.4%",books:["bet365","Betfair"]},
-];
-
-const SHAREBET = [
-  {match:"리버풀 vs 맨시티",gap:"+13.1%",b1:{n:"bet365",v:2.10},b2:{n:"Unibet",v:1.92},profit:"보장 +4.2%",type:"SUPERBET",hot:true},
-  {match:"LAL vs PHO",gap:"+9.8%",b1:{n:"William",v:2.35},b2:{n:"Betfair",v:2.18},profit:"보장 +3.1%",type:"ARBI",hot:false},
-];
-
-const TICKER_TEXT = "⚡ 아스날 홈 배당 -22.9% 급락 감지  ·  🐋 신디케이트 $2.1M PSG 진입  ·  🔴 살라 결장 확정  ·  💹 유럽 샤프머니 $14.7M 이동 중";
-
-// ══════════════════════════════════════════════════
-// HOOKS
-// ══════════════════════════════════════════════════
-function useInterval(cb: any, ms: any) {
-  const r = useRef(cb);
-  useEffect(() => { r.current = cb; });
-  useEffect(() => { const id = setInterval(() => r.current(), ms); return () => clearInterval(id); }, [ms]);
-}
-
-// ══════════════════════════════════════════════════
-// COMPONENTS
-// ══════════════════════════════════════════════════
-function SpickerLogo({ size = 36 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="lg1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#60a5fa"/><stop offset="50%" stopColor="#818cf8"/><stop offset="100%" stopColor="#a78bfa"/>
-        </linearGradient>
-        <linearGradient id="lg2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#1e3a8a"/><stop offset="100%" stopColor="#312e81"/>
-        </linearGradient>
-      </defs>
-      <rect width="48" height="48" rx="12" fill="url(#lg2)"/>
-      <path d="M10 18 L10 30 L16 30 L24 36 L24 12 L16 18 Z" fill="url(#lg1)"/>
-      <circle cx="38" cy="10" r="4" fill="#ef4444"/>
-    </svg>
-  );
-}
-
-function AnalogDigit({ n, color = "#f59e0b", size = 52 }: any) {
-  const s = size;
-  const w = s * 0.55, h = s;
-  const sw = s * 0.09, gap = s * 0.04;
-  const dim = "rgba(255,255,255,.06)";
+// --- [신버전 최적화: 아날로그 숫자 컴포넌트] ---
+const AnalogDigit = ({ n, color = "#f59e0b", size = 40 }: any) => {
   const segs: any = {
-    top: { on: [0,2,3,5,6,7,8,9] }, tl: { on: [0,4,5,6,8,9] }, tr: { on: [0,1,2,3,4,7,8,9] },
-    mid: { on: [2,3,4,5,6,8,9] }, bl: { on: [0,2,6,8] }, br: { on: [0,1,3,4,5,6,7,8,9] }, bot: { on: [0,2,3,5,6,8,9] },
+    top: [0,2,3,5,6,7,8,9], tl: [0,4,5,6,8,9], tr: [0,1,2,3,4,7,8,9],
+    mid: [2,3,4,5,6,8,9], bl: [0,2,6,8], br: [0,1,3,4,5,6,7,8,9], bot: [0,2,3,5,6,8,9]
   };
-  const active = (seg: any) => segs[seg].on.includes(n) ? color : dim;
+  const isActive = (s: string) => segs[s].includes(n);
+  const dim = "rgba(255,255,255,0.03)";
+  
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`}>
-      <rect x={sw+gap} y={gap} width={w-2*(sw+gap)} height={sw} rx={sw/2} fill={active("top")} />
-      <rect x={gap} y={sw+gap*2} width={sw} height={h/2-sw-gap*2} rx={sw/2} fill={active("tl")} />
-      <rect x={w-sw-gap} y={sw+gap*2} width={sw} height={h/2-sw-gap*2} rx={sw/2} fill={active("tr")} />
-      <rect x={sw+gap} y={h/2-sw/2} width={w-2*(sw+gap)} height={sw} rx={sw/2} fill={active("mid")} />
-      <rect x={gap} y={h/2+sw/2+gap} width={sw} height={h/2-sw-gap*2} rx={sw/2} fill={active("bl")} />
-      <rect x={w-sw-gap} y={h/2+sw/2+gap} width={sw} height={h/2-sw-gap*2} rx={sw/2} fill={active("br")} />
-      <rect x={sw+gap} y={h-sw-gap} width={w-2*(sw+gap)} height={sw} rx={sw/2} fill={active("bot")} />
+    <svg width={size * 0.6} height={size} viewBox="0 0 30 50">
+      <rect x="5" y="2" width="20" height="4" rx="2" fill={isActive('top') ? color : dim} />
+      <rect x="2" y="7" width="4" height="15" rx="2" fill={isActive('tl') ? color : dim} />
+      <rect x="24" y="7" width="4" height="15" rx="2" fill={isActive('tr') ? color : dim} />
+      <rect x="5" y="23" width="20" height="4" rx="2" fill={isActive('mid') ? color : dim} />
+      <rect x="2" y="28" width="4" height="15" rx="2" fill={isActive('bl') ? color : dim} />
+      <rect x="24" y="28" width="4" height="15" rx="2" fill={isActive('br') ? color : dim} />
+      <rect x="5" y="44" width="20" height="4" rx="2" fill={isActive('bot') ? color : dim} />
     </svg>
   );
-}
+};
 
-// ══════════════════════════════════════════════════
-// MAIN APPLICATION
-// ══════════════════════════════════════════════════
-export default function App() {
+export default function SpickerFinal() {
   const [mounted, setMounted] = useState(false);
-  const [timer, setTimer] = useState(299);
-  const [ballPos, setBallPos] = useState({ x: 48, y: 52 });
-  const [liveOdds, setLiveOdds] = useState({ home: 3.45, draw: 2.10, away: 1.85 });
-  const [sideOpen, setSideOpen] = useState(true);
+  const [ballPos, setBallPos] = useState({ x: 50, y: 50 });
+  const [odds, setOdds] = useState({ h: 3.53, d: 2.06, a: 1.88 });
 
-  useEffect(() => { setMounted(true); }, []);
-  useInterval(() => setTimer(t => t > 0 ? t - 1 : 299), 1000);
-  useInterval(() => {
-    setBallPos({ x: Math.random() * 64 + 18, y: Math.random() * 60 + 20 });
-    setLiveOdds(prev => ({
-      home: +Math.max(1.1, prev.home + (Math.random() * .14 - .07)).toFixed(2),
-      draw: +Math.max(1.1, prev.draw + (Math.random() * .08 - .04)).toFixed(2),
-      away: +Math.max(1.1, prev.away + (Math.random() * .12 - .06)).toFixed(2),
-    }));
-  }, 2800);
+  useEffect(() => {
+    setMounted(true);
+    const interval = setInterval(() => {
+      setBallPos({ x: Math.random() * 60 + 20, y: Math.random() * 40 + 30 });
+      setOdds(prev => ({
+        h: +(prev.h + (Math.random() * 0.1 - 0.05)).toFixed(2),
+        d: +(prev.d + (Math.random() * 0.04 - 0.02)).toFixed(2),
+        a: +(prev.a + (Math.random() * 0.1 - 0.05)).toFixed(2),
+      }));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   if (!mounted) return null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#010409", color: "#e2e8f0", fontFamily: "sans-serif", overflowX: "hidden" }}>
-      <style>{`
-        @keyframes spk-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-ticker { display: flex; width: max-content; animation: spk-ticker 35s linear infinite; }
-      `}</style>
+    <div className="flex flex-col min-h-screen bg-[#010409] text-slate-300 font-sans overflow-hidden">
+      {/* 스타일 강제 주입: 신버전 충돌 방지 */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-ticker { display: flex; width: max-content; animation: ticker 35s linear infinite; }
+        .glass-effect { background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); }
+      `}} />
 
-      {/* HEADER */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(1,4,9,.9)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,.05)", height: "70px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <Menu style={{ color: "#64748b", cursor: "pointer" }} onClick={() => setSideOpen(!sideOpen)} />
-          <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-            <SpickerLogo size={32} />
-            <h1 style={{ fontSize: "20px", fontWeight: 900, color: "#fff", fontStyle: "italic", marginLeft: "10px" }}>SPICKER</h1>
+      {/* --- 고정 헤더 --- */}
+      <header className="h-16 flex items-center justify-between px-6 border-b border-white/5 bg-[#010409]/90 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-4">
+          <Menu className="w-5 h-5 text-slate-500 cursor-pointer" />
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20"><Volume2 className="text-white w-5 h-5" /></div>
+            <h1 className="text-xl font-black italic tracking-tighter text-white">SPICKER</h1>
           </div>
         </div>
-        <div style={{ flex: 1, margin: "0 40px", overflow: "hidden", display: "flex", alignItems: "center" }}>
-          <span className="animate-ticker" style={{ fontSize: "11px", color: "#475569" }}>{TICKER_TEXT} &nbsp;&nbsp; {TICKER_TEXT}</span>
+        <div className="hidden md:flex flex-1 mx-10 max-w-2xl bg-white/5 rounded-xl border border-white/5 px-4 py-2 items-center gap-3">
+          <Search className="w-4 h-4 text-slate-600" />
+          <input type="text" placeholder="Intelligence Search..." className="bg-transparent border-none outline-none text-xs w-full" />
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-          <Bell style={{ color: "#64748b" }} />
-          <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "linear-gradient(to bottom right, #10b981, #0f766e)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <User style={{ color: "white", width: "24px" }} />
-          </div>
+        <div className="flex items-center gap-4">
+          <Bell className="w-5 h-5 text-slate-500" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center"><User className="text-white w-5 h-5" /></div>
         </div>
-      </nav>
+      </header>
 
-      {/* MAIN CONTENT */}
-      <main style={{ maxWidth: "1600px", margin: "0 auto", padding: "32px", display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "24px" }}>
-        
-        {/* LEFT: DROP RADAR */}
-        <aside style={{ gridColumn: "span 3" }}>
-          <div style={{ background: "rgba(13,17,23,0.8)", padding: "24px", borderRadius: "24px", border: "1px solid rgba(239,68,68,0.2)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px" }}>
-              <span style={{ fontSize: "10px", fontWeight: 900, color: "#ef4444", letterSpacing: "1px" }}>DROP RADAR</span>
-            </div>
-            <div style={{ fontSize: "64px", fontWeight: 900, color: "#ef4444", textAlign: "center", marginBottom: "32px", fontFamily: "monospace" }}>
-              {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, "0")}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {DROPS.map((d, i) => (
-                <div key={i} style={{ padding: "12px", background: "rgba(239,68,68,0.05)", borderRadius: "12px", border: "1px solid rgba(239,68,68,0.1)" }}>
-                  <div style={{ fontSize: "11px", fontWeight: 800 }}>{d.match}</div>
-                  <div style={{ fontSize: "14px", fontWeight: 900, color: "#ef4444", marginTop: "4px" }}>{d.pct}%</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* CENTER: AI TRACKER */}
-        <div style={{ gridColumn: "span 6" }}>
-          <div style={{ background: "rgba(13,17,23,0.8)", borderRadius: "24px", border: "1px solid rgba(99,102,241,0.2)", overflow: "hidden" }}>
-            <div style={{ padding: "20px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between" }}>
-              <span style={{ fontSize: "10px", fontWeight: 900 }}>AI REAL-TIME TRACKER</span>
-              <span style={{ color: "#ef4444", fontWeight: 900, fontSize: "10px" }}>LIVE</span>
-            </div>
-            <div style={{ height: "300px", position: "relative", background: "#060b18" }}>
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", display: "flex", gap: "10px", background: "rgba(0,0,0,0.5)", padding: "15px", borderRadius: "16px" }}>
-                <AnalogDigit n={0} size={50} /><AnalogDigit n={1} size={50} />
+      {/* --- 메인 컨텐츠 영역: 스크롤 가능 --- */}
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+        <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* LEFT: DROP RADAR */}
+          <div className="lg:col-span-3">
+            <div className="glass-effect p-6 rounded-[2rem] space-y-6">
+              <div className="flex justify-between items-center text-[10px] font-black text-rose-500 tracking-widest">
+                <span>DROP RADAR</span>
+                <span className="px-2 py-0.5 bg-rose-500 text-white rounded">CRITICAL</span>
               </div>
-              <div style={{ position: "absolute", width: "14px", height: "14px", background: "#fbbf24", borderRadius: "50%", left: `${ballPos.x}%`, top: `${ballPos.y}%`, transition: "all 2.8s ease-in-out", boxShadow: "0 0 20px #fbbf24" }} />
+              <div className="text-6xl font-mono font-black text-rose-500 text-center py-4 drop-shadow-[0_0_20px_rgba(244,63,94,0.3)]">04:50</div>
+              <div className="space-y-3">
+                {['ARS vs MCI', 'PSG vs BAY'].map(match => (
+                  <div key={match} className="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                    <span className="text-[11px] font-bold">{match}</span>
+                    <span className="text-rose-500 font-black text-xs">-22.9%</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div style={{ padding: "24px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", background: "rgba(0,0,0,0.2)" }}>
-              {Object.entries(liveOdds).map(([key, val]) => (
-                <div key={key} style={{ textAlign: "center", padding: "12px", background: "#0d1117", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.03)" }}>
-                  <div style={{ fontSize: "9px", color: "#475569", marginBottom: "4px" }}>{key.toUpperCase()}</div>
-                  <div style={{ fontSize: "20px", fontWeight: 900, fontFamily: "monospace" }}>{val}</div>
+          </div>
+
+          {/* CENTER: AI ENGINE */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="glass-effect rounded-[2rem] overflow-hidden">
+              <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <div className="flex items-center gap-2"><Radio className="w-4 h-4 text-rose-500 animate-pulse" /><span className="text-[10px] font-black uppercase">AI Tracker</span></div>
+                <span className="text-[10px] text-rose-500 font-black">72' LIVE</span>
+              </div>
+              <div className="h-64 bg-[#060b18] relative overflow-hidden">
+                {/* 경기장 격자 */}
+                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                {/* 아날로그 스코어보드 */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-4 bg-black/60 p-4 rounded-2xl border border-white/5 z-10 backdrop-blur-md">
+                  <AnalogDigit n={0} size={50} />
+                  <div className="w-1.5 h-1.5 bg-[#f59e0b] rounded-full animate-pulse shadow-[0_0_10px_#f59e0b]" />
+                  <AnalogDigit n={1} size={50} />
                 </div>
-              ))}
+                {/* 매치볼 */}
+                <div className="absolute w-4 h-4 bg-yellow-400 rounded-full shadow-[0_0_20px_#facc15] transition-all duration-1000" style={{ left: `${ballPos.x}%`, top: `${ballPos.y}%` }} />
+              </div>
+              <div className="p-6 grid grid-cols-3 gap-4 bg-black/20">
+                {['HOME', 'DRAW', 'AWAY'].map((l, i) => (
+                  <div key={l} className="bg-white/5 p-4 rounded-xl text-center border border-white/5">
+                    <div className="text-[9px] text-slate-500 font-black mb-1">{l}</div>
+                    <div className="text-xl font-mono font-black text-emerald-400">{i===0?odds.h:i===1?odds.d:odds.a}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* TICKER MARQUEE */}
+            <div className="glass-effect p-6 rounded-[2rem] overflow-hidden">
+              <div className="animate-ticker gap-6">
+                {Array.from({length: 10}).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl border border-white/5 w-64 shadow-xl">
+                    <span className="text-xs font-black text-slate-600">#{i+1}</span>
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center"><User className="w-4 h-4 text-emerald-400" /></div>
+                    <div className="text-xs font-black">MASTER_{100+i}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT: WHALE TRACKER */}
+          <div className="lg:col-span-3">
+            <div className="glass-effect p-6 rounded-[2rem] h-full space-y-6">
+              <div className="flex justify-between items-center text-[10px] font-black text-indigo-400 tracking-widest">
+                <span>WHALE TRACKER</span>
+                <Activity className="w-4 h-4" />
+              </div>
+              <div className="space-y-4">
+                {['$2.14M', '$1.38M', '$980K'].map((vol, i) => (
+                  <div key={i} className="p-5 bg-white/5 rounded-2xl border border-white/5 space-y-3">
+                    <div className="text-[11px] font-black text-white">LAL VS PHX</div>
+                    <div className="text-2xl font-mono font-black text-indigo-400">{vol}</div>
+                    <div className="flex justify-between text-[9px] text-slate-600 font-bold"><span>CONFIDENCE</span><span>94%</span></div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* RIGHT: WHALE TRACKER */}
-        <aside style={{ gridColumn: "span 3" }}>
-          <div style={{ background: "rgba(13,17,23,0.8)", padding: "24px", borderRadius: "24px", border: "1px solid rgba(99,102,241,0.2)", height: "100%" }}>
-            <span style={{ fontSize: "10px", fontWeight: 900, color: "#6366f1", letterSpacing: "1px" }}>WHALE TRACKER</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "20px" }}>
-              {WHALES.map((w, i) => (
-                <div key={i} style={{ padding: "16px", background: "rgba(99,102,241,0.03)", borderRadius: "16px", border: "1px solid rgba(99,102,241,0.1)" }}>
-                  <div style={{ fontSize: "11px", fontWeight: 900 }}>{w.match}</div>
-                  <div style={{ fontSize: "18px", fontWeight: 900, color: "#818cf8", marginTop: "8px" }}>{w.vol}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
       </main>
 
-      {/* FOOTER */}
-      <footer style={{ position: "fixed", bottom: 0, width: "100%", height: "45px", background: "rgba(1,4,9,0.95)", borderTop: "1px solid rgba(255,255,255,0.03)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 40px", zIndex: 100 }}>
-        <div style={{ display: "flex", gap: "30px" }}>
-          <span style={{ fontSize: "9px", fontWeight: 900, color: "#334155" }}><RefreshCw style={{ width: "10px", marginRight: "5px", display: "inline" }} /> DATA SYNC ACTIVE</span>
-          <span style={{ fontSize: "9px", fontWeight: 900, color: "#334155" }}><Globe2 style={{ width: "10px", marginRight: "5px", display: "inline" }} /> 32 GLOBAL BOOKIES</span>
+      {/* --- 고정 푸터 --- */}
+      <footer className="h-10 border-t border-white/5 bg-[#010409]/95 flex items-center justify-between px-10 text-[9px] font-bold text-slate-700 z-50">
+        <div className="flex gap-6 items-center">
+          <span className="flex items-center gap-2"><RefreshCw className="w-3 h-3 text-emerald-500" /> SYNCING DATA</span>
+          <span>32 GLOBAL BOOKIES</span>
         </div>
-        <span style={{ fontSize: "9px", fontWeight: 900, color: "#1e293b" }}>SPICKER PROTOCOL v1.0.8</span>
+        <span className="font-mono">SPICKER PROTOCOL v1.1.0-NEW</span>
       </footer>
     </div>
   );
