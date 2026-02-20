@@ -253,7 +253,7 @@ function SectionHead({ icon, title, desc, right, onMore }) {
 }
 
 // ══════════════════════════════════════════════════
-// GLOBAL STATS BAR
+// GLOBAL STATS BAR — 가로 스크롤 마키 띠
 // ══════════════════════════════════════════════════
 function GlobalStats() {
   const stats = [
@@ -264,18 +264,28 @@ function GlobalStats() {
     {label:"배당 폭락 감지", val:"23건",   icon:"📉", color:"#ef4444"},
     {label:"스블 활성 유저", val:"4,821",  icon:"👥", color:"#a855f7"},
   ];
+  // 두 번 반복해서 끊김 없는 루프 효과
+  const doubled = [...stats, ...stats];
   return (
-    <div style={{ display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:8, minWidth:0 }}>
-      {stats.map((s,i) => (
-        <Card key={i} style={{ padding:"12px 12px", minWidth:0 }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:5 }}>
-            <span style={{ fontSize:14 }}>{s.icon}</span>
-            <div style={{ width:5, height:5, borderRadius:"50%", background:s.color, animation:"spk-dot-blink 2s ease-in-out infinite" }}/>
+    <div style={{ position:"relative", width:"100%", overflow:"hidden", background:"rgba(10,15,30,0.75)", backdropFilter:"blur(28px)", WebkitBackdropFilter:"blur(28px)", border:"1px solid rgba(255,255,255,.07)", borderRadius:14, boxShadow:"inset 0 1px 0 rgba(255,255,255,.04)" }}>
+      {/* 좌우 페이드 마스크 */}
+      <div style={{ position:"absolute", left:0, top:0, bottom:0, width:40, background:"linear-gradient(90deg,rgba(10,15,30,.9),transparent)", zIndex:2, pointerEvents:"none" }}/>
+      <div style={{ position:"absolute", right:0, top:0, bottom:0, width:40, background:"linear-gradient(270deg,rgba(10,15,30,.9),transparent)", zIndex:2, pointerEvents:"none" }}/>
+      {/* 스크롤 트랙 */}
+      <div style={{ display:"flex", animation:"spk-stats-scroll 22s linear infinite", width:"max-content" }}>
+        {doubled.map((s, i) => (
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"11px 22px", borderRight:"1px solid rgba(255,255,255,.05)", whiteSpace:"nowrap", flexShrink:0 }}>
+            <span style={{ fontSize:16 }}>{s.icon}</span>
+            <div>
+              <div style={{ fontSize:15, fontWeight:900, color:s.color, fontFamily:"monospace", letterSpacing:-1, lineHeight:1 }}>{s.val}</div>
+              <div style={{ fontSize:10, color:"#64748b", marginTop:2, fontWeight:700, letterSpacing:.4, textTransform:"uppercase" }}>{s.label}</div>
+            </div>
+            <div style={{ width:4, height:4, borderRadius:"50%", background:s.color, marginLeft:4, animation:"spk-dot-blink 2s ease-in-out infinite" }}/>
+            {/* 구분자 */}
+            <span style={{ color:"rgba(255,255,255,.1)", fontSize:18, marginLeft:4 }}>·</span>
           </div>
-          <div style={{ fontSize:16, fontWeight:900, color:s.color, fontFamily:"monospace", letterSpacing:-1, lineHeight:1 }}>{s.val}</div>
-          <div style={{ fontSize:10, color:"#64748b", marginTop:4, fontWeight:700, letterSpacing:.5, textTransform:"uppercase" }}>{s.label}</div>
-        </Card>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
@@ -332,7 +342,7 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
         right={<Tag color="#ef4444" pulse>LIVE {matchTime}&apos;</Tag>}
         onMore={() => {}}/>
       {/* Pitch */}
-      <div style={{ position:"relative", width:"100%", paddingTop:"46%", background:"radial-gradient(ellipse at center,rgba(30,58,138,.3) 0%,rgba(4,10,25,.9) 70%)" }}>
+      <div style={{ position:"relative", width:"100%", paddingTop:"60%", background:"radial-gradient(ellipse at center,rgba(30,58,138,.3) 0%,rgba(4,10,25,.9) 70%)" }}>
         <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", opacity:.16 }} viewBox="0 0 400 184" preserveAspectRatio="none">
           <rect x="5" y="5" width="390" height="174" fill="none" stroke="#60a5fa" strokeWidth="1.5"/>
           <line x1="200" y1="5" x2="200" y2="179" stroke="#60a5fa" strokeWidth="1"/>
@@ -348,22 +358,51 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
         )}
         {/* Ball */}
         <div style={{ position:"absolute", width:13, height:13, borderRadius:"50%", background:"#fbbf24", boxShadow:"0 0 16px #fbbf24,0 0 32px rgba(251,191,36,.5)", left:`${ballPos.x}%`, top:`${ballPos.y}%`, transform:"translate(-50%,-50%)", transition:"left 1.4s cubic-bezier(.25,.46,.45,.94), top 1.4s cubic-bezier(.25,.46,.45,.94)" }}/>
-        {/* Team names */}
-        <div style={{ position:"absolute", top:8, left:12, fontSize:10, fontWeight:900, color:"#94a3b8" }}>아스날</div>
-        <div style={{ position:"absolute", top:8, right:12, fontSize:10, fontWeight:900, color:"#94a3b8" }}>맨시티</div>
-        {/* Score */}
+
+        {/* Team — LEFT (HOME) */}
+        <div style={{ position:"absolute", top:0, left:0, bottom:0, width:"26%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:8, padding:"0 10px", background:"linear-gradient(90deg,rgba(96,165,250,.07) 0%,transparent 100%)" }}>
+          <div style={{ width:58, height:58, borderRadius:14, background:"rgba(96,165,250,.1)", border:"1px solid rgba(96,165,250,.25)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", boxShadow:"0 0 18px rgba(96,165,250,.2)" }}>
+            <img
+              src="https://media.api-sports.io/football/teams/42.png"
+              alt="Arsenal"
+              width={46}
+              height={46}
+              style={{ objectFit:"contain" }}
+            />
+          </div>
+          <div style={{ fontSize:17, fontWeight:900, color:"#f1f5f9", textAlign:"center", lineHeight:1.2, letterSpacing:-.3, textShadow:"0 0 14px rgba(96,165,250,.5)" }}>아스날</div>
+          <div style={{ fontSize:10, color:"#60a5fa", fontWeight:800, letterSpacing:1.5 }}>HOME</div>
+        </div>
+
+        {/* Team — RIGHT (AWAY) */}
+        <div style={{ position:"absolute", top:0, right:0, bottom:0, width:"26%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:8, padding:"0 10px", background:"linear-gradient(270deg,rgba(129,140,248,.07) 0%,transparent 100%)" }}>
+          <div style={{ width:58, height:58, borderRadius:14, background:"rgba(129,140,248,.1)", border:"1px solid rgba(129,140,248,.25)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", boxShadow:"0 0 18px rgba(129,140,248,.2)" }}>
+            <img
+              src="https://media.api-sports.io/football/teams/50.png"
+              alt="Man City"
+              width={46}
+              height={46}
+              style={{ objectFit:"contain" }}
+            />
+          </div>
+          <div style={{ fontSize:17, fontWeight:900, color:"#f1f5f9", textAlign:"center", lineHeight:1.2, letterSpacing:-.3, textShadow:"0 0 14px rgba(129,140,248,.5)" }}>맨시티</div>
+          <div style={{ fontSize:10, color:"#818cf8", fontWeight:800, letterSpacing:1.5 }}>AWAY</div>
+        </div>
+
+        {/* Score — center */}
         <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)" }}>
           <ScoreBoard h={score.h} a={score.a}/>
         </div>
-        {/* Match stats */}
-        <div style={{ position:"absolute", bottom:6, left:0, right:0, display:"flex", justifyContent:"space-around", padding:"0 10px" }}>
+
+        {/* Match stats — bottom */}
+        <div style={{ position:"absolute", bottom:8, left:"26%", right:"26%", display:"flex", justifyContent:"space-around" }}>
           {[{l:"점유율",h:"43%",a:"57%"},{l:"슈팅",h:"4",a:"8"},{l:"유효",h:"2",a:"5"},{l:"코너",h:"3",a:"6"}].map((s,i) => (
             <div key={i} style={{ textAlign:"center" }}>
-              <div style={{ fontSize:8, color:"#64748b", marginBottom:1 }}>{s.l}</div>
+              <div style={{ fontSize:9, color:"#64748b", marginBottom:2 }}>{s.l}</div>
               <div style={{ display:"flex", gap:3, alignItems:"center" }}>
-                <span style={{ fontSize:10, fontWeight:900, color:"#60a5fa" }}>{s.h}</span>
-                <span style={{ fontSize:8, color:"#64748b" }}>-</span>
-                <span style={{ fontSize:10, fontWeight:900, color:"#818cf8" }}>{s.a}</span>
+                <span style={{ fontSize:11, fontWeight:900, color:"#60a5fa" }}>{s.h}</span>
+                <span style={{ fontSize:9, color:"#475569" }}>-</span>
+                <span style={{ fontSize:11, fontWeight:900, color:"#818cf8" }}>{s.a}</span>
               </div>
             </div>
           ))}
@@ -903,6 +942,7 @@ export default function SpickerDashboard() {
   return (
     <div style={{ minHeight:"100vh", background:"#010409", color:"#e2e8f0", fontFamily:"'Pretendard','Noto Sans KR',sans-serif", overflowX:"hidden", position:"relative" }}>
       <style>{`
+        @keyframes spk-stats-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
         @keyframes spk-ping        { 0%{transform:scale(1);opacity:.6} 70%,100%{transform:scale(2.6);opacity:0} }
         @keyframes spk-timer-pulse { 0%,100%{text-shadow:0 0 28px rgba(239,68,68,.8)} 50%{text-shadow:0 0 50px rgba(239,68,68,1),0 0 80px rgba(239,68,68,.4)} }
         @keyframes spk-num-flash   { 0%,100%{opacity:1} 50%{opacity:.6} }
