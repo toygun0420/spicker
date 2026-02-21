@@ -356,6 +356,15 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
         {danger && (
           <div style={{ position:"absolute", right:"4%", top:"22%", width:"16%", height:"56%", background:"rgba(239,68,68,.1)", border:"1px solid rgba(239,68,68,.4)", borderRadius:6, animation:"spk-danger-pulse 1s ease-in-out infinite" }}/>
         )}
+
+        {/* DANGEROUS ATTACK 배너 — 피치 상단 안쪽 */}
+        {danger && (
+          <div style={{ position:"absolute", top:8, left:"50%", transform:"translateX(-50%)", zIndex:10, display:"flex", alignItems:"center", gap:6, padding:"5px 14px", borderRadius:99, background:"rgba(239,68,68,.18)", border:"1px solid rgba(239,68,68,.5)", backdropFilter:"blur(8px)", animation:"spk-card-flash 1.2s ease-in-out infinite", whiteSpace:"nowrap" }}>
+            <span style={{ fontSize:11 }}>⚠️</span>
+            <span style={{ fontSize:11, fontWeight:900, color:"#ef4444", letterSpacing:.5 }}>DANGEROUS ATTACK</span>
+            <span style={{ fontSize:10, color:"#94a3b8" }}>맨시티 · {matchTime}&apos;</span>
+          </div>
+        )}
         {/* Ball */}
         <div style={{ position:"absolute", width:13, height:13, borderRadius:"50%", background:"#fbbf24", boxShadow:"0 0 16px #fbbf24,0 0 32px rgba(251,191,36,.5)", left:`${ballPos.x}%`, top:`${ballPos.y}%`, transform:"translate(-50%,-50%)", transition:"left 1.4s cubic-bezier(.25,.46,.45,.94), top 1.4s cubic-bezier(.25,.46,.45,.94)" }}/>
 
@@ -417,13 +426,6 @@ function LiveTracker({ ballPos, liveOdds, score, matchTime, danger }) {
           </div>
         ))}
       </div>
-      {danger && (
-        <div style={{ margin:"0 12px 10px", padding:"7px 12px", borderRadius:10, background:"rgba(239,68,68,.08)", border:"1px solid rgba(239,68,68,.3)", display:"flex", alignItems:"center", gap:8, animation:"spk-card-flash 1.2s ease-in-out infinite" }}>
-          <span style={{ fontSize:13 }}>⚠️</span>
-          <span style={{ fontSize:11, fontWeight:900, color:"#ef4444" }}>DANGEROUS ATTACK</span>
-          <span style={{ fontSize:10, color:"#64748b" }}>맨시티 · 페널티박스 침투 · {matchTime}&apos;</span>
-        </div>
-      )}
     </Card>
   );
 }
